@@ -24,6 +24,7 @@ app.get('/', (req, res) => {
     res.render("index.ejs", { blogs });
 });
 
+
 // New Blog form route
 app.get('/blogs/new', (req, res) => {
     res.render("new.ejs");
