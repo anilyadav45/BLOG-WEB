@@ -79,5 +79,9 @@ app.delete('/blogs/:id', (req, res) => {
     res.redirect('/');
 });
 
+
+
 // Start server
-app.listen(port, () => console.log(`Blog App running on port  : ${port}`));
+app.listen(port, '0.0.0.0', () => {
+    console.log(`App is listening on http://0.0.0.0:${port}`);
+});

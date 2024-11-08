@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <%- include('layout.ejs') %>
     <div class="container mt-5">
         <h1><%= blog.title %></h1>
         <p><%= blog.content %></p>
@@ -15,6 +16,7 @@
         <form action="/blogs/<%= blog.id %>?_method=DELETE" method="POST" style="display:inline;">
             <button type="submit" class="btn btn-danger">Delete</button>
         </form>
+        
         <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
     </div>
 </body>

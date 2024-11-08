@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <% include('layout.ejs') %>
+    <%- include('layout.ejs') %>
     <div class="container">
         <h1 class="mt-5">Blog Posts</h1>
         <a href="/blogs/new" class="btn btn-success mb-3">Create New Blog</a>
@@ -35,6 +35,8 @@
         <% } else { %>
             <p>No blog posts available.</p>
         <% } %>
+
+        
     </div>
 </body>
 
