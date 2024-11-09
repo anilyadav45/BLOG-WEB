@@ -8,11 +8,16 @@ app.use(express.static('public'));
 app.use(methodOverride('_method'));
 let port = 8080;
 
+// Middleware to parse URL-encoded form data
+app.use(express.urlencoded({ extended: true }));
+
 // In-memory data array
 let blogs = [
     { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
     { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' }
 ];
+//for login data
+const perInfoArr =  [];
 
 // Utility function to generate unique IDs for each new blog post
 const generateId = () => blogs.length ? Math.max(...blogs.map(blog => blog.id)) + 1 : 1;
@@ -78,9 +83,22 @@ app.delete('/blogs/:id', (req, res) => {
     blogs = blogs.filter(b => b.id !== parseInt(req.params.id));
     res.redirect('/');
 });
+//creating route for sign in section  
+//this section only give data filling section but to take those data post request we have to create
+app.get("/login",(req,res)=>{
+    res.render("signin.ejs"); //here i am sending empty object in ejs i take some data from input 
+})
 
-
-
+//to get those data we filled on signin section
+app.post("/login",(req,res)=>{
+    let perInfo = {
+        email: req.body.email,
+        password:req.body.password
+    };
+    perInfoArr.push(perInfo);
+    console.log(perInfo);
+    res.redirect("/");
+})
 // Start server
 app.listen(port, '0.0.0.0', () => {
     console.log(`App is listening on http://0.0.0.0:${port}`);
