@@ -99,6 +99,11 @@ app.post("/login",(req,res)=>{
     console.log(perInfo);
     res.redirect("/");
 })
+
+//creating route to get register section
+app.get("/register",(req,res)=>{
+    res.render("register.ejs");
+})
 // Start server
 app.listen(port, '0.0.0.0', () => {
     console.log(`App is listening on http://0.0.0.0:${port}`);
