@@ -123,4 +123,4 @@ app.post("/register",(req,res)=>{
 app.listen(port, '0.0.0.0', () => {
     console.log(`App is listening on http://0.0.0.0:${port}`);
 });
-//server in mobile localip:8080 try
+//server in mobile localip:8080 try it once
