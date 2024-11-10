@@ -1,5 +1,8 @@
 body{
     background-color: #20173d;
+    font-family: "Poppins", serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .container{
@@ -53,8 +56,8 @@ body{
 }
 
 /* Form title styling */
-h1 {
-    font-size: 2rem;
+.form-container  {
+    font-size: 1rem;
     color: #333;
     text-align: center;
     margin-bottom: 1.5rem;
@@ -75,15 +78,17 @@ h1 {
 
 /* Button styling */
 .btn-primary {
-    background-color: #007bff;
+    background-color:#4D8CF5;
     border-color: #007bff;
     transition: background-color 0.3s ease;
 }
 
-/* .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004085;
-} */
+.btn-warning{
+    background-color: #00bfa6c9;
+    color: #fff;
+    width: 4rem;
+    border: none;
+}
 
 .btn-secondary {
     margin-top: 1rem;
@@ -126,9 +131,30 @@ h1 {
 
 .sign-in-container .card{
     position: relative;
-    bottom: 2rem;
-    box-shadow: 0 0 11px #ffffff79;
+    bottom: 4rem;
+    box-shadow: 0 0 4px #ffffff79;
 }
 .card label{
     color: #fff;
+}
+.readmore{
+    color: #fff;
+}
+.sign-nav{
+    position: relative;
+    left: 1rem;
+    top: 5px;
+}
+.create-new label{
+    color: #fff;
+}
+.main h1{
+    font-size: 1.3rem;
+    padding-bottom: 1rem;
+}
+.main h1 i{
+    position: relative;
+    left: 1rem;
+    font-size: 1.3rem;
+    top: 5px;
 }

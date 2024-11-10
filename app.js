@@ -13,11 +13,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // In-memory data array
 let blogs = [
-    { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
-    { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' }
+    { id: 1, title: 'Embracing Incremental Improvement in Code', content: 'When it comes to writing clean and efficient code, the instinct is often to aim for perfection on the first try. However, one approach that has transformed my coding workflow is embracing incremental improvement. Instead of striving for an ideal solution right away, I focus on getting a functional version of the code up and running, then optimize and refine it over time.' },
+    { id: 2, title: 'Shifting from Traditional Loops to Recursive Thinking', content: 'In many cases, developers rely heavily on loops to iterate over data structures. However, I’ve been exploring the power of recursion to simplify code and solve problems in new ways. Recursive functions can make code more elegant and readable, especially for problems that involve hierarchical or nested structures' }
 ];
 //for login data
 const perInfoArr =  [];
+//for register data
+const registerInfoArr = [];
 
 // Utility function to generate unique IDs for each new blog post
 const generateId = () => blogs.length ? Math.max(...blogs.map(blog => blog.id)) + 1 : 1;
@@ -103,6 +105,19 @@ app.post("/login",(req,res)=>{
 //creating route to get register section
 app.get("/register",(req,res)=>{
     res.render("register.ejs");
+}) //this is only for getting the form 
+//route to take user data and print
+app.post("/register",(req,res)=>{
+    let regInfo = {
+        name : req.body.name,
+        email : req.body.email,
+        username : req.body.username,
+        password : req.body.password,
+        confirmpassword : req.body.confirmPassword
+    };
+    registerInfoArr.push(regInfo);
+    console.log(regInfo);
+    res.redirect("/");
 })
 // Start server
 app.listen(port, '0.0.0.0', () => {
