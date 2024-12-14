@@ -2,14 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const app = express();
+const sql = require('mysql2');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(methodOverride('_method'));
-let port = 8080;
+
+let port = 3050;
 
 // Middleware to parse URL-encoded form data
 app.use(express.urlencoded({ extended: true }));
+
 
 // In-memory data array
 let blogs = [
