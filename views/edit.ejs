@@ -19,7 +19,7 @@
         <div class="container mt-5">
             <div class="form-container edit">
                 <h1>Edit Blog Post</h1>
-                <form action="/blogs/<%= blog.id %>?_method=PUT" method="POST">
+                <form action="/blogs/<%= blog._id %>?_method=PUT" method="POST">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" id="title" name="title" value="<%= blog.title %>"

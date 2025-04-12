@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const mongoose = require("mongoose");
 const app = express();
-const sql = require('mysql2');
+
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -10,120 +11,216 @@ app.use(methodOverride('_method'));
 
 let port = 3050;
 
-// Middleware to parse URL-encoded form data
-app.use(express.urlencoded({ extended: true }));
+// session for after login 
+const session = require('express-session');
+
+app.use(session({
+    secret: 'anil4577',  // Replace with a strong secret
+    resave: false,
+    saveUninitialized: false
+}));
 
 
-// In-memory data array
-let blogs = [
-    { id: 1, title: 'Embracing Incremental Improvement in Code', content: 'When it comes to writing clean and efficient code, the instinct is often to aim for perfection on the first try. However, one approach that has transformed my coding workflow is embracing incremental improvement. Instead of striving for an ideal solution right away, I focus on getting a functional version of the code up and running, then optimize and refine it over time.' },
-    { id: 2, title: 'Shifting from Traditional Loops to Recursive Thinking', content: 'In many cases, developers rely heavily on loops to iterate over data structures. However, I’ve been exploring the power of recursion to simplify code and solve problems in new ways. Recursive functions can make code more elegant and readable, especially for problems that involve hierarchical or nested structures' }
-];
-//for login data
-const perInfoArr =  [];
-//for register data
-const registerInfoArr = [];
+// MongoDB connection
+mongoose.connect('mongodb://127.0.0.1:27017/blogUsers')
+    .then(() => console.log('MongoDB connected users'))
+    .catch((err) => console.error('MongoDB connection error:', err));
 
-// Utility function to generate unique IDs for each new blog post
-const generateId = () => blogs.length ? Math.max(...blogs.map(blog => blog.id)) + 1 : 1;
+// User schema
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: { type: String, unique: true },
+    username: { type: String, unique: true },
+    password: String
+});
 
-// ROUTES
+// Blog post schema
+const postSchema = new mongoose.Schema({
+    title: String,
+    content: String,
+    author: String,
+    date: { type: Date, default: Date.now }
+});
 
-// Home route - Display all blog posts
-app.get('/', (req, res) => {
-    res.render("index.ejs", { blogs });
+const User = mongoose.model("User", userSchema);
+const Blog = mongoose.model("Blog", postSchema);
+
+// -------------------------------------------------------------------
+// ✅ ROUTES for Blog
+// -------------------------------------------------------------------
+
+// Homepage - Show all blog posts
+app.get('/', async (req, res) => {
+    if (!req.session.user) {
+        return res.render("signin.ejs"); // 🟠 Not logged in → show login form
+    }
+
+    try {
+        const blogs = await Blog.find().sort({ date: -1 }); // 🟢 Logged in → show blogs
+        res.render("index.ejs", {
+            blogs: blogs,
+            user: req.session.user  // Must be set during login
+        });
+    } catch (err) {
+        console.error("Error fetching blogs:", err);
+        res.send("Error fetching blog posts");
+    }
 });
 
 
-// New Blog form route
+// New blog form
 app.get('/blogs/new', (req, res) => {
     res.render("new.ejs");
 });
 
-// Create Blog - Add new post to blogs array
+// Create blog
 app.post('/blogs', (req, res) => {
-    const newBlog = {
-        id: generateId(),
+    const newBlog = new Blog({
         title: req.body.title,
-        content: req.body.content
-    };
-    blogs.push(newBlog);
-    res.redirect('/');
+        content: req.body.content,
+        author: "Anonymous",
+        date: new Date()
+    });
+
+    newBlog.save()
+        .then(() => res.redirect('/'))
+        .catch((err) => {
+            console.error("Error saving blog:", err);
+            res.send("Failed to create blog post");
+        });
 });
 
-// Show individual blog post
-app.get('/blogs/:id', (req, res) => {
-    const blog = blogs.find(b => b.id === parseInt(req.params.id));
-    if (blog) {
-        res.render("show.ejs", { blog });
-    } else {
-        res.status(404).send('Blog not found');
+// Show single blog post
+app.get('/blogs/:id', async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id);
+        if (blog) {
+            res.render("show.ejs", { blog });
+        } else {
+            res.status(404).send("Blog not found");
+        }
+    } catch (err) {
+        console.error("Error fetching blog:", err);
+        res.status(500).send("Internal server error");
     }
 });
 
-// Edit Blog form route
-app.get('/blogs/:id/edit', (req, res) => {
-    const blog = blogs.find(b => b.id === parseInt(req.params.id));
-    if (blog) {
-        res.render("edit.ejs", { blog });
-    } else {
-        res.status(404).send('Blog not found');
+// Edit form for a blog
+app.get('/blogs/:id/edit', async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id);
+        if (blog) {
+            res.render("edit.ejs", { blog });
+        } else {
+            res.status(404).send("Blog not found");
+        }
+    } catch (err) {
+        console.error("Error fetching blog for edit:", err);
+        res.status(500).send("Internal server error");
     }
 });
 
-// Update Blog - Modify an existing blog post
-app.put('/blogs/:id', (req, res) => {
-    const blog = blogs.find(b => b.id === parseInt(req.params.id));
-    if (blog) {
-        blog.title = req.body.title;
-        blog.content = req.body.content;
-        res.redirect(`/blogs/${blog.id}`);
-    } else {
-        res.status(404).send('Blog not found');
+// Update a blog post
+app.put('/blogs/:id', async (req, res) => {
+    try {
+        const updatedBlog = await Blog.findByIdAndUpdate(
+            req.params.id,
+            {
+                title: req.body.title,
+                content: req.body.content
+            },
+            { new: true }
+        );
+
+        if (updatedBlog) {
+            res.redirect(`/blogs/${updatedBlog._id}`);
+        } else {
+            res.status(404).send("Blog not found");
+        }
+    } catch (err) {
+        console.error("Error updating blog:", err);
+        res.status(500).send("Failed to update blog");
     }
 });
 
-// Delete Blog - Remove a blog post
-app.delete('/blogs/:id', (req, res) => {
-    blogs = blogs.filter(b => b.id !== parseInt(req.params.id));
-    res.redirect('/');
+// Delete blog
+app.delete('/blogs/:id', async (req, res) => {
+    try {
+        const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
+        if (deletedBlog) {
+            res.redirect('/');
+        } else {
+            res.status(404).send("Blog not found");
+        }
+    } catch (err) {
+        console.error("Error deleting blog:", err);
+        res.status(500).send("Failed to delete blog");
+    }
 });
-//creating route for sign in section  
-//this section only give data filling section but to take those data post request we have to create
-app.get("/login",(req,res)=>{
-    res.render("signin.ejs"); //here i am sending empty object in ejs i take some data from input 
-})
 
-//to get those data we filled on signin section
-app.post("/login",(req,res)=>{
-    let perInfo = {
-        email: req.body.email,
-        password:req.body.password
-    };
-    perInfoArr.push(perInfo);
-    console.log(perInfo);
-    res.redirect("/");
-})
+// -------------------------------------------------------------------
+// ✅ LOGIN + REGISTER (your original logic preserved)
+// -------------------------------------------------------------------
 
-//creating route to get register section
-app.get("/register",(req,res)=>{
+// Show login form
+app.get("/login", (req, res) => {
+    res.render("signin.ejs");
+});
+
+// Handle login
+app.post("/login", (req, res) => {
+    User.findOne({ email: req.body.email, password: req.body.password })
+    .then(user => {
+        if (user) {
+            console.log("Login success:", user.email);
+            req.session.user = user;  // ✅ Store user in session
+            res.redirect("/");
+        } else {
+            console.log("Login failed");
+            res.send("Login failed: unmatched credentials!");
+        }
+    })
+
+});
+
+// Show registration form
+app.get("/register", (req, res) => {
     res.render("register.ejs");
-}) //this is only for getting the form 
-//route to take user data and print
-app.post("/register",(req,res)=>{
-    let regInfo = {
-        name : req.body.name,
-        email : req.body.email,
-        username : req.body.username,
-        password : req.body.password,
-        confirmpassword : req.body.confirmPassword
+});
+
+// Handle registration
+app.post("/register", (req, res) => {
+    const regInfo = {
+        name: req.body.name,
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password
     };
-    registerInfoArr.push(regInfo);
-    console.log(regInfo);
-    res.redirect("/");
-})
+
+    const newUser = new User(regInfo);
+    newUser.save()
+        .then(() => {
+            console.log("User registered:", regInfo);
+            res.redirect("/");
+        })
+        .catch((err) => {
+            console.error("Registration error:", err);
+            res.send("Error during registration. Possibly duplicate email or username.");
+        });
+});
+//LOGOUT SESSION ---------------------------------------------
+
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) console.log("Logout error:", err);
+        res.redirect('/');
+    });
+});
+//-------------------------
+
+
+
 // Start server
 app.listen(port, '0.0.0.0', () => {
     console.log(`App is listening on http://0.0.0.0:${port}`);
 });
-//server in mobile localip:8080 try it once

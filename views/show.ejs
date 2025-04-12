@@ -25,8 +25,8 @@
             <p>
                 <%= blog.content %>
             </p>
-            <a href="/blogs/<%= blog.id %>/edit" class="btn btn-warning">Edit</a>
-            <form action="/blogs/<%= blog.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <a href="/blogs/<%= blog._id %>/edit" class="btn btn-warning">Edit</a>
+            <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
 
