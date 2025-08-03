@@ -158,3 +158,88 @@ body{
     font-size: 1.3rem;
     top: 5px;
 }
+
+/* Edit section stlyiinlg  */
+.form-container.edit {
+    background: linear-gradient(145deg, #1e1e2f, #2b2b45);
+    border: 2px solid #3f3f5e;
+    padding: 2rem 2.5rem;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    max-width: 600px;
+    margin: auto;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.form-container.edit h1 {
+    font-size: 2rem;
+    color: #ffc107;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.form-container.edit label {
+    font-weight: 600;
+    color: #c9c9f0;
+}
+
+.form-container.edit .form-control {
+    background-color: #2d2d4d;
+    color: #fff;
+    border: 1px solid #55557f;
+    transition: all 0.3s ease;
+}
+
+.form-container.edit .form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+    background-color: #39395d;
+}
+
+.form-container.edit .btn-primary {
+    background-color: #ffc107;
+    border: none;
+    color: #000;
+    font-weight: 600;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    display: block;
+    margin: auto;
+}
+
+.form-container.edit .btn-primary:hover {
+    background-color: #ffb300;
+    transform: scale(1.05);
+}
+
+.form-container.edit .btn-secondary {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: #ccc;
+    font-weight: 500;
+    display: block;
+    margin: 1rem auto 0;
+    transition: all 0.3s ease;
+}
+
+.form-container.edit .btn-secondary:hover {
+    color: #ffc107;
+    border-color: #ffc107;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

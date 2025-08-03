@@ -1,4 +1,5 @@
 const express = require('express');
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const mongoose = require("mongoose");
@@ -22,7 +23,7 @@ app.use(session({
 
 
 // MongoDB connection
-mongoose.connect('mongodb://127.0.0.1:27017/blogUsers')
+mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('MongoDB connected users'))
     .catch((err) => console.error('MongoDB connection error:', err));
 
@@ -38,7 +39,6 @@ const userSchema = new mongoose.Schema({
 const postSchema = new mongoose.Schema({
     title: String,
     content: String,
-    author: String,
     date: { type: Date, default: Date.now }
 });
 
