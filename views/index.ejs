@@ -16,42 +16,61 @@
 
 <body>
     <%- include('layout.ejs') %>
+
         <div class="container main">
-            <h1 class="mt-2">Capture Moments. Express Freely. Inspire Others 💡</h1>
+            <h1 class="mt-2 page-title">Capture Moments. Express Freely. Inspire Others 💡</h1>
             <a href="/blogs/new" class="btn btn-success mb-3">📝 Create a New Post</a>
-            <% if (blogs && blogs.length> 0) { %> <!-- Check if there are blogs -->
-                <% blogs.forEach(blog=> { %> <!-- Loop through each blog -->
-                    <div class="card mt-3">
-                        <div class="card-body">
-                            <h5 class="card-title">
+
+            <% if (blogs && blogs.length> 0) { %>
+                <% blogs.forEach(blog=> { %>
+                    <div class="post-card my-4">
+                        <div class="post-header">
+                            <div class="user-info">
+                                <img src="https://i.pravatar.cc/40" alt="User Avatar" class="avatar">
+                                <span class="username">Username</span>
+                            </div>
+                        </div>
+
+                        <div class="post-body">
+                            <h3 class="post-title">
                                 <%= blog.title %>
-                            </h5>
-                            <p class="card-text">
+                            </h3>
+                            <img src="https://thumbs.dreamstime.com/b/morning-meditation-29552916.jpg?w=768"
+                                alt="<%= blog.title %>" class="post-image">
+                            <p class="post-text">
                                 <%= blog.content %>
                             </p>
-                            <a href="/blogs/<%= blog._id %>" class="btn btn-primary">Read More</a>
-                            <a href="/blogs/<%= blog._id %>/edit" class="btn btn-warning">Edit</a>
-                            <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                            <form action="/comment">
-                                <div class="mb-3 mt-3">
-                                    <label for="comment" class="form-label">What’s on your mind?</label>
-                                    <textarea class="form-control" id="comment" name="comment" rows="2"
-                                        placeholder="Share your thoughts..."></textarea>
-                                    <button type="submit" class="btn btn-secondary">Comment</button>
-                                </div>
+                        </div>
 
+                         <div class="post-actions">
+                            <a href="/blogs/<%= blog._id %>" class="btn btn-read-more">Read More</a>
+                            <a href="/blogs/<%= blog._id %>/edit" class="btn btn-edit">Edit</a>
+                            <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-delete">Delete</button>
+                            </form>
+                        </div>
+
+                        <div class="engagement-stats">
+                            <span><i class="fas fa-heart"></i> 25</span> <span><i class="fas fa-comment"></i> 12</span>
+                            <span><i class="fas fa-share"></i></span>
+                        </div>
+
+                        <div class="comment-section">
+                            <form action="/comment" method="POST" class="comment-form">
+                                <img src="https://i.pravatar.cc/30" alt="Your Avatar" class="avatar-comment"> <input
+                                    type="text" name="comment" class="form-control comment-input"
+                                    placeholder="What’s on your mind? Share your thoughts...">
+                                <button type="submit" class="btn btn-comment">Comment</button>
                             </form>
                         </div>
                     </div>
                     <% }); %>
                         <% } else { %>
-                            <p>No posts yet. Be the first to share something!</p>
+                            <p class="text-center text-white">No posts yet. Be the first to share something!</p>
                             <% } %>
-
-
         </div>
+
+        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

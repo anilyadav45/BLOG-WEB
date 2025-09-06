@@ -243,3 +243,151 @@ body{
         transform: translateY(0);
     }
 }
+
+
+/* for likes comments and photo  */
+
+/* ========== CUSTOM CSS FOR NEW POST UI ========== */
+
+.page-title {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Post Card Styling */
+.post-card {
+    background-color: #161625;
+    border: 1px solid #4a4a6a;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 0 25px rgba(128, 0, 128, 0.4); /* Purple glow effect */
+    transition: all 0.3s ease;
+    color: #e0e0e0;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 40px rgba(128, 0, 128, 0.6);
+}
+
+/* Post Header */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid #9370db;
+}
+
+.username {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #f0f0f0;
+}
+
+/* Specific Action Buttons for the Card */
+.post-actions .btn {
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-left: 5px;
+}
+.post-actions .btn:hover {
+    color: #fff; /* Keep text color on hover */
+    opacity: 0.9;
+}
+
+.btn-read-more { background-color: #007bff; }
+.btn-edit { background-color: #17a2b8; }
+.btn-delete { background-color: #dc3545; }
+
+
+/* Post Body */
+.post-title {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    object-fit: cover;
+}
+
+.post-text {
+    font-size: 1em;
+    line-height: 1.6;
+    color: #c0c0c0;
+}
+
+/* Engagement Stats */
+.engagement-stats {
+    display: flex;
+    gap: 25px;
+    color: #a0a0a0;
+    padding: 10px 0;
+    border-top: 1px solid #33334d;
+    border-bottom: 1px solid #33334d;
+    margin: 20px 0;
+}
+
+.engagement-stats span {
+    cursor: pointer;
+}
+
+.engagement-stats i {
+    margin-right: 8px;
+}
+
+/* Comment Section */
+.comment-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-comment {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}
+
+.comment-input.form-control {
+    flex-grow: 1;
+    background-color: #2c2c44;
+    border: 1px solid #4a4a6a;
+    border-radius: 20px;
+    color: #fff;
+    padding: 8px 15px;
+}
+
+.comment-input.form-control::placeholder {
+    color: #888;
+}
+
+.btn-comment {
+    background-color: #e0e0e0;
+    color: #161625;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+}
