@@ -17,17 +17,17 @@
 <body>
     <%- include('layout.ejs') %>
         <div class="container mt-5 create-new">
-            <h1>Create New Insight</h1>
+            <h1>Capture Your Moment</h1>
             <form action="/blogs" method="POST">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Insight Title</label>
+                    <label for="title" class="form-label">Blog Title</label>
                     <input type="text" class="form-control" id="title" name="title" required>
                 </div>
                 <div class="mb-3">
-                    <label for="content" class="form-label">Your Insights Content</label>
+                    <label for="content" class="form-label">Your Blog Content</label>
                     <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-success">Create Insight</button>
+                <button type="submit" class="btn btn-success">Publish Post</button>
             </form>
         </div>
 </body>

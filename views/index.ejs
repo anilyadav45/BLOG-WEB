@@ -17,8 +17,8 @@
 <body>
     <%- include('layout.ejs') %>
         <div class="container main">
-            <h1 class="mt-2">Debate Like a Legend. Defend Like a Fan 🏏</h1>
-            <a href="/blogs/new" class="btn btn-success mb-3">🔥 Drop Your Hot Take</a>
+            <h1 class="mt-2">Capture Moments. Express Freely. Inspire Others 💡</h1>
+            <a href="/blogs/new" class="btn btn-success mb-3">📝 Create a New Post</a>
             <% if (blogs && blogs.length> 0) { %> <!-- Check if there are blogs -->
                 <% blogs.forEach(blog=> { %> <!-- Loop through each blog -->
                     <div class="card mt-3">
@@ -34,11 +34,20 @@
                             <form action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" style="display:inline;">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
+                            <form action="/comment">
+                                <div class="mb-3 mt-3">
+                                    <label for="comment" class="form-label">What’s on your mind?</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="2"
+                                        placeholder="Share your thoughts..."></textarea>
+                                    <button type="submit" class="btn btn-secondary">Comment</button>
+                                </div>
+
+                            </form>
                         </div>
                     </div>
                     <% }); %>
                         <% } else { %>
-                            <p>No blog posts available.</p>
+                            <p>No posts yet. Be the first to share something!</p>
                             <% } %>
 
 
